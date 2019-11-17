@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../service/service.service';
-import {Stars} from '../service/data';
+
 
 @Component({
   selector: 'app-table',

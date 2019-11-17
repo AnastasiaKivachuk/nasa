@@ -1,0 +1,16 @@
+.wrapper {
+    border: 1px black solid;
+    border-radius: 20px;
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    background: #E6E6FA;
+    padding: 2% 0;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
