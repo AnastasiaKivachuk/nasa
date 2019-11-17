@@ -1,5 +1,12 @@
-<p>table works!</p>
-<div *ngFor="let star of allStars"> -->
-    <div>{{star.date}}</div>
-    <!-- <div>{{allStars}} -->
+<div class="bigWrap">
+    <div class="wrap aaa">
+        <div *ngFor="let date of allDates">
+            <div class="heading">{{date}}</div>
+        </div>
+    </div>
+    <div class="wrap">
+        <div *ngFor="let name of allNames; let i = index">
+            <div (click)="openDetails(i)" class="mainForName">{{name}}</div>
+        </div>
+    </div>
 </div>

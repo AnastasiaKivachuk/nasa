@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ServiceService {
  private _url: string;
+ private _urlDet: string;
 private dateStart: Date;
 private dateEnd: Date;
   constructor( public router: Router,
@@ -22,9 +23,18 @@ private dateEnd: Date;
       this.router.navigate(['table']);
     }
 
+    openDet(id) {
+      this.router.navigate([`details/${id}`]);
+    }
+
     getData(): Observable<any>{
 
       return this.http.get(this._url);
+    }
+
+    getDetails(): Observable<any>{
+
+      return this.http.get(this._urlDet);
     }
 
     takeDates(objArray){
@@ -36,5 +46,9 @@ private dateEnd: Date;
       console.log(this._url);
     }
 
-    // console.log(this.dateStart);
+    takeDetails(id){
+      this._urlDet=`http://www.neowsapp.com/rest/v1/neo/${id}?api_key=9Ix4GmtXb3ZOtISXbhA91egYf7rFwo1s4cZoqbq3`;
+      console.log(this._url);
+    }
+
 }

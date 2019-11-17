@@ -20,8 +20,6 @@ export class FormComponent {
 
 
 submit(){
-  // console.log(dateStart);
-  // console.log(this.myForm.value);
   this.service.takeDates(this.myForm.value);
   this.service.openTable();
 }

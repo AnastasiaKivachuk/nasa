@@ -1,0 +1,20 @@
+.mainForName,
+.heading {
+    border: 1px black solid;
+    margin: -1px -1px -1px 0;
+}
+
+.aaa {
+    height: 50%;
+}
+
+.wrap {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+}
+
+.bigWrap {
+    display: flex;
+    margin: 0 auto;
+}
