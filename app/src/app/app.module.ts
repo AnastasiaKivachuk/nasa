@@ -7,20 +7,25 @@ import { FormComponent } from './form/form.component';
 
 import { ReactiveFormsModule }   from '@angular/forms';
 import { TableComponent } from './table/table.component';
+import {HttpClientModule} from '@angular/common/http';
+import { ServiceService } from './service/service.service';
+import { DetailsComponent } from './details/details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    TableComponent
+    TableComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

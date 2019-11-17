@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { ServiceService } from '../service/service.service';
 
 @Component({
   selector: 'app-form',
@@ -8,18 +9,20 @@ import { FormGroup, FormControl, Validators} from '@angular/forms';
 })
 export class FormComponent {
   myForm : FormGroup;
-  constructor() {this.myForm = new FormGroup({
+  constructor(
+    public service: ServiceService
+  ) {this.myForm = new FormGroup({
 
-    "userName": new FormControl("Tom", Validators.required),
-    "userEmail": new FormControl("", [
-      Validators.required,
-      Validators.email
-    ]),
-    "userPhone": new FormControl("", Validators.pattern("[0-9]{10}"))
+    "dateStart": new FormControl("", Validators.required),
+    "dateEnd": new FormControl("", Validators.required),
   });
   }
 
+
 submit(){
-  console.log(this.myForm);
+  // console.log(dateStart);
+  // console.log(this.myForm.value);
+  this.service.takeDates(this.myForm.value);
+  this.service.openTable();
 }
 }

@@ -1,0 +1,22 @@
+.centerBlock {
+    border: 1px black solid;
+    border-radius: 20px;
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 5%;
+    background: #E6E6FA;
+    padding: 5% 0;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+input.ng-touched.ng-invalid {
+    border: solid red 2px;
+}
+
+input.ng-touched.ng-valid {
+    border: solid green 2px;
+}
