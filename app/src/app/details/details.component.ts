@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ServiceService } from '../service/service.service';
+import {Component, OnInit} from '@angular/core';
+import {ServiceService} from '../service/service.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-details',
@@ -7,16 +8,22 @@ import { ServiceService } from '../service/service.service';
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent implements OnInit {
-  public name:string;
-  public absolute_magnitude_h:string;
-  public nasa_jpl_url:string;
+  public name: string;
+  public absoluteMagnitudeH: string;
+  public nasaJplUrl: string;
 
-  constructor(public service: ServiceService) { }
+  constructor(public service: ServiceService,
+              private route: ActivatedRoute) {
+  }
 
-  ngOnInit() { this.service.getDetails()
-    .subscribe((data)=>{
-this.name=data.name;
-this.absolute_magnitude_h=data.absolute_magnitude_h;
-this.nasa_jpl_url =data.nasa_jpl_url;
-    })
-}}
+  ngOnInit() {
+    console.log(this.route.snapshot.paramMap.get('id'));
+    this.service.takeDetails(this.route.snapshot.paramMap.get('id'));
+    this.service.getDetails()
+      .subscribe((data) => {
+        this.name = data.name;
+        this.absoluteMagnitudeH = data.absolute_magnitude_h;
+        this.nasaJplUrl = data.nasa_jpl_url;
+      });
+  }
+}

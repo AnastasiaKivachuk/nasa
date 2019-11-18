@@ -20,3 +20,60 @@ input.ng-touched.ng-invalid {
 input.ng-touched.ng-valid {
     border: solid green 2px;
 }
+
+.mainForName{
+  border: 1px black solid;
+  padding: 3px 0;
+  margin: 0 -1px -1px 0;
+  text-align: center;
+  cursor: pointer;
+}
+.heading {
+  border: 1px black solid;
+  padding: 3px 0;
+  margin: 0 -1px -1px 0;
+  text-align: center;
+}
+
+a.buttons {
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  padding: .8em 1em calc(.8em + 3px);
+  border-radius: 3px;
+  background: rgb(64,199,129);
+  box-shadow: 0 -3px rgb(53,167,110) inset;
+  transition: 0.2s;
+
+}
+a.buttons:hover { background: rgb(53, 167, 110); }
+a.buttons:active {
+  background: rgb(33,147,90);
+  box-shadow: 0 3px rgb(33,147,90) inset;
+}
+.wrapButtons {
+  display: flex;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin-top: 20px;
+}
+
+.bigWrap {
+  display: flex;
+  justify-content: center;
+}
+
+h3{
+  text-align: center;
+}
+
+.hideBlock{
+  display: none;
+}
+.showBlock{
+  display: block;
+}

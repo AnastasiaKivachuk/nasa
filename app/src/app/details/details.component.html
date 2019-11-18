@@ -1,9 +1,9 @@
 <div class="wrapper" *ngIf=this.name>
-    <i class="fa fa-close close" [routerLink]="['/table']"></i>
+    <i class="fa fa-close close" [routerLink]="['/main']"></i>
     <h2>Name</h2>
     <div>{{this.name}}</div>
     <h2>Absolute magnitude h</h2>
-    <div>{{this.absolute_magnitude_h}}</div>
+    <div>{{this.absoluteMagnitudeH}}</div>
     <h4>More information</h4>
-    <a href={{nasa_jpl_url}} target="_blank">{{this.nasa_jpl_url}}</a>
+    <a href={{nasa_jpl_url}} target="_blank">{{this.nasaJplUrl}}</a>
 </div>

@@ -1,4 +1,5 @@
-<div class="centerBlock">
+<div class="centerBlock" [ngClass]="{'showBlock': hide === false,
+'hideBlock': hide === true}">
     <form [formGroup]="myForm" novalidate (ngSubmit)="submit()">
         <div class="form-group dateInput">
             <label>Date start</label><br>
@@ -20,6 +21,36 @@
             <button class="btn btn-primary col-md-4 offset-4" [disabled]="myForm.invalid">
     Отправить
   </button>
+          <div class="alert alert-danger"  [ngClass]="{'showBlock': hideVal === true,
+'hideBlock': hideVal === false}">
+            Введите период времени менее 7 дней
+            или проверьте, чтобы Date end был позднее Date start
+          </div>
         </div>
     </form>
+
+</div>
+
+<div class="table"  [ngClass]="{'showBlock': hide === true,
+'hideBlock': hide === false}">
+<a href="/main">TRY AGAIN</a>
+
+<h3  [ngClass]="{'showBlock': hideH3 === false,
+'hideBlock': hideH3 === true}">Please, wait...</h3>
+<div class="bigWrap" *ngIf="allDates">
+
+  <div class="wrapButtons">
+    <div *ngFor="let date of allDates;let i=index">
+      <a (click)="openNames(date)" class="buttons">{{date}}</a>
+    </div>
+  </div>
+</div>
+
+<div class="bigWrap">
+  <div class="wrap">
+    <div *ngFor="let name of allNames; let i = index">
+      <div (click)="openDetails(i)" class="mainForName">{{name}}</div>
+    </div>
+  </div>
+</div>
 </div>
