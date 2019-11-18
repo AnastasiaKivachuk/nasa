@@ -1,7 +1,9 @@
+<a href="/form">TRY AGAIN</a>
 <div class="bigWrap">
+
     <div class="wrap">
-        <div *ngFor="let date of allDates">
-            <div class="heading">{{date}}</div>
+        <div *ngFor="let date of allDates;let i=index">
+            <div class="heading" style="height: 25,4*{{this.length[i]}}px">{{date}}</div>
         </div>
     </div>
     <div class="wrap">

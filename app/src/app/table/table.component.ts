@@ -12,6 +12,7 @@ public allDates:string[] = [];
 public allStars: any[]=[];
 public allNames: any[]=[];
 public allId: any[]=[];
+public length: any[]=[];
 public obj: any;
   constructor(
     public service: ServiceService
@@ -26,6 +27,7 @@ public obj: any;
       this.allDates.push(key);
         this.allStars.push(data.near_earth_objects[key]);
         this.allStars.forEach((item)=>{
+          this.length.push(item.length);
           for (const key of Object.keys(item)) {
             this.allNames.push(item[key].name);
             this.allId.push(item[key].id);
