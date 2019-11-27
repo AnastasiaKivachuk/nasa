@@ -10,6 +10,7 @@ import {Store} from '@ngrx/store';
 import {objDate} from '../store/selector/selectorDate';
 import {objData} from '../store/selector/selectorDate';
 import {selectedArrData} from '../store/selector/selectorDate';
+import {isFetching} from '../store/selector/selectorDate';
 
 
 @Component({
@@ -20,8 +21,8 @@ import {selectedArrData} from '../store/selector/selectorDate';
 export class FormComponent implements OnInit {
   myForm: FormGroup;
   public hideVal = false;
+  public hideH3: Observable<boolean>;
   public hide = false;
-  public hideH3 = false;
   public objectKeys = Object.keys;
   private dateStart: any;
   private selectedObj: Observable<{
@@ -39,6 +40,9 @@ export class FormComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<AppState>
   ) {
+    this.hideH3 = store.select(isFetching).subscribe(data => {
+      this.hideH3 = data;
+    });;
 
     this.objAllData = store.select(objData);
     this.selectedObj = store.select(selectedArrData);
@@ -55,47 +59,17 @@ export class FormComponent implements OnInit {
     });
     if (this.dateStart) {
       this.hide = true;
-      this.hideH3 = false;
-      this.groupData();
+      // this.hideH3 = false;
+      // this.groupData();
     }
   }
 
   openForm() {
     if (this.dateStart) {
       this.hide = false;
-      this.hideH3 = true;
+      // this.hideH3 = true;
       this.store.dispatch(new StoreDataAction.Success({}));
     }
-  }
-
-  groupData() {
-    this.store.dispatch(new StoreDataAction.Fetch());
-    this.service.getData()
-      .subscribe((data) => {
-          this.hideH3 = true;
-          const mainObj = {};
-          Object.keys(data.near_earth_objects).forEach((item, i) => {
-            const arrOfStars = [];
-            data.near_earth_objects[item].forEach((item2) => {
-              const objOfStars = {
-                id: undefined,
-                name: undefined
-              };
-              objOfStars.id = item2.id;
-              objOfStars.name = item2.name;
-              arrOfStars.push(objOfStars);
-
-            });
-            console.log(arrOfStars);
-            mainObj[item] = arrOfStars;
-          });
-          console.log(mainObj);
-          this.store.dispatch(new StoreDataAction.Success(mainObj));
-        },
-        err => {
-          console.log(err);
-          this.store.dispatch(new StoreDataAction.Error(err));
-        });
   }
 
   submit() {
@@ -105,7 +79,7 @@ export class FormComponent implements OnInit {
       this.hide = true;
       this.hideVal = false;
 
-      this.groupData();
+      this.store.dispatch(new StoreDataAction.Fetch());
     } else {
       this.hideVal = true;
     }

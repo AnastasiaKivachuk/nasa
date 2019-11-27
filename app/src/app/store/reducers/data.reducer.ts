@@ -57,4 +57,6 @@ export function reducer(state: StoreData = initialState, action: StoreDataAction
 export const getstartEndDate = (state: StoreData) => state.startEndDate;
 export const getObjData = (state: StoreData) => state.data;
 export const getObjSelectedData = (state: StoreData) => state.selectedDate;
+export const getIsFetching = (state: StoreData) => state.isFetching;
+
 

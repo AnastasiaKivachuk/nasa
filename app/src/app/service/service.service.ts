@@ -12,6 +12,7 @@ import {AppState} from '../store/app.state';
 import * as StoreDataAction from '../store/action/data.action';
 import {objDate} from '../store/selector/selectorDate';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +37,11 @@ export class ServiceService {
     this.router.navigate([`details/${id}`]);
   }
 
+  // getData(): Observable<any> {
+  //
+  //   return this.http.get(this.url);
+  // }
+
   getData(): Observable<any> {
 
     return this.http.get(this.url);
@@ -43,7 +49,6 @@ export class ServiceService {
 
   getDetails(): Observable<any> {
     return this.http.get(this.urlDet);
-
   }
 
 

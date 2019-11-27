@@ -12,6 +12,8 @@ import {DetailsComponent} from './details/details.component';
 import {StoreModule} from '@ngrx/store';
 import {reducer} from './store/reducers/data.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { DataEffects } from './effect/data.effect';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
       storeData: reducer
     }),
     StoreDevtoolsModule.instrument({maxAge: 5}),
+    EffectsModule.forRoot([DataEffects])
   ],
   providers: [ServiceService],
   bootstrap: [AppComponent]

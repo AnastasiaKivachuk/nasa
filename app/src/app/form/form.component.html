@@ -35,9 +35,8 @@
 <div class="table" [ngClass]="{'showBlock': hide === true,
 'hideBlock': hide === false}">
   <a (click)="openForm()">TRY AGAIN</a>
-
-  <h3 [ngClass]="{'showBlock': hideH3 === false,
-'hideBlock': hideH3 === true}">Please, wait...</h3>
+  <h3 [ngClass]="{'showBlock': hideH3 === true,
+'hideBlock': hideH3 === false}">Please, wait...</h3>
   <div class="bigWrap" *ngIf="objAllData | async as obj">
     <div *ngFor="let key of objectKeys(obj)">
 
