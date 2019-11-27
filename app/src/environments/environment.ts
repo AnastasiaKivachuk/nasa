@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiKey: '9Ix4GmtXb3ZOtISXbhA91egYf7rFwo1s4cZoqbq3',
+  mainUrl: 'https://api.nasa.gov/neo/rest/v1/'
 };
 
 /*

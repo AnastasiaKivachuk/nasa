@@ -17,7 +17,6 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.route.snapshot.paramMap.get('id'));
     this.service.takeDetails(this.route.snapshot.paramMap.get('id'));
     this.service.getDetails()
       .subscribe((data) => {

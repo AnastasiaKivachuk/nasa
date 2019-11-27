@@ -2,6 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {ServiceService} from '../service/service.service';
 import {ActivatedRoute} from '@angular/router';
+import * as StoreDataAction from '../store/action/data.action';
+import {AppState} from '../store/app.state';
+
+import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {objDate} from '../store/selector/selectorDate';
+import {objData} from '../store/selector/selectorDate';
+import {selectedArrData} from '../store/selector/selectorDate';
+
 
 @Component({
   selector: 'app-form',
@@ -13,18 +22,26 @@ export class FormComponent implements OnInit {
   public hideVal = false;
   public hide = false;
   public hideH3 = false;
-  public allDates: string[] = [];
-  public allStars: {}[] = [];
-  public allNames: string[] = [];
-  public allId: number[] = [];
-  public obj: {};
+  public objectKeys = Object.keys;
   private dateStart: any;
-  private dateEnd: any;
+  private selectedObj: Observable<{
+    name: any;
+    id: any;
+  }[]>;
+  private dateStartEnd: Observable<{
+    dateStart: any;
+    dateEnd: any;
+  }>;
+  private objAllData: Observable<{}>;
 
   constructor(
     public service: ServiceService,
     private route: ActivatedRoute,
+    private store: Store<AppState>
   ) {
+
+    this.objAllData = store.select(objData);
+    this.selectedObj = store.select(selectedArrData);
     this.myForm = new FormGroup({
       dateStart: new FormControl('', Validators.required),
       dateEnd: new FormControl('', Validators.required),
@@ -32,39 +49,62 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.service.returnStartEnd());
-    if (this.service.returnStartEnd()) {
+    this.dateStartEnd = this.store.select(objDate);
+    this.dateStartEnd.subscribe((data: { dateStart: Date, dateEnd: Date }) => {
+      this.dateStart = data.dateStart;
+    });
+    if (this.dateStart) {
       this.hide = true;
       this.hideH3 = false;
-      this.service.getStartEnd();
       this.groupData();
     }
   }
 
+  openForm() {
+    if (this.dateStart) {
+      this.hide = false;
+      this.hideH3 = true;
+      this.store.dispatch(new StoreDataAction.Success({}));
+    }
+  }
+
   groupData() {
+    this.store.dispatch(new StoreDataAction.Fetch());
     this.service.getData()
       .subscribe((data) => {
-        this.hideH3 = true;
-        for (const key of Object.keys(data.near_earth_objects)) {
-          this.allDates.push(key);
-          this.allStars.push(data.near_earth_objects[key]);
+          this.hideH3 = true;
+          const mainObj = {};
+          Object.keys(data.near_earth_objects).forEach((item, i) => {
+            const arrOfStars = [];
+            data.near_earth_objects[item].forEach((item2) => {
+              const objOfStars = {
+                id: undefined,
+                name: undefined
+              };
+              objOfStars.id = item2.id;
+              objOfStars.name = item2.name;
+              arrOfStars.push(objOfStars);
 
-        }
-
-        this.allDates.forEach((item, index) => {
-          console.log(item);
-          console.log(this.allStars[index]);
-          this.obj = {...this.obj, ...{[item]: this.allStars[index]}};
+            });
+            console.log(arrOfStars);
+            mainObj[item] = arrOfStars;
+          });
+          console.log(mainObj);
+          this.store.dispatch(new StoreDataAction.Success(mainObj));
+        },
+        err => {
+          console.log(err);
+          this.store.dispatch(new StoreDataAction.Error(err));
         });
-        console.log(this.obj);
-
-      });
   }
 
   submit() {
     if (this.checkValid(this.myForm.value)) {
-      this.service.takeDates(this.myForm.value);
+      this.store.dispatch(new StoreDataAction.ChangeStartEndDate(this.myForm.value));
+      this.service.takeDates();
       this.hide = true;
+      this.hideVal = false;
+
       this.groupData();
     } else {
       this.hideVal = true;
@@ -72,34 +112,17 @@ export class FormComponent implements OnInit {
   }
 
   checkValid(dates) {
-    this.dateStart = new Date(dates.dateStart).getTime();
-    this.dateEnd = new Date(dates.dateEnd).getTime();
-    if (604800000 > this.dateEnd - this.dateStart  && this.dateEnd - this.dateStart > 0 ) {
-      return true;
-    } else {
-      return false;
-    }
+    const dateStart = new Date(dates.dateStart).getTime();
+    const dateEnd = new Date(dates.dateEnd).getTime();
+    return 604800000 > dateEnd - dateStart && dateEnd - dateStart > 0;
   }
 
   openNames(date) {
-    while (this.allNames.length > 0) {
-      this.allNames.pop();
-    }
-    while (this.allId.length > 0) {
-      this.allId.pop();
-    }
-    for (const key of Object.keys(this.obj)) {
-      if (date === key) {
-        this.obj[date].forEach((item) => {
-          this.allNames.push(item.name);
-          this.allId.push(item.id);
-        });
-      }
-    }
+    this.store.dispatch(new StoreDataAction.ChangeSelectedDate(date));
   }
 
 
-  openDetails(i) {
-    this.service.openDet(this.allId[i]);
+  openDetails(idStar) {
+    this.service.openDet(idStar);
   }
 }

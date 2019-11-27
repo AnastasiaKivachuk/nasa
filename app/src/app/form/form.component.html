@@ -1,56 +1,63 @@
 <div class="centerBlock" [ngClass]="{'showBlock': hide === false,
 'hideBlock': hide === true}">
-    <form [formGroup]="myForm" novalidate (ngSubmit)="submit()">
-        <div class="form-group dateInput">
-            <label>Date start</label><br>
-            <input type="date" class="form-control" name="dateStart" formControlName="dateStart" />
-            <div class="alert alert-danger" *ngIf="myForm.controls['dateStart'].invalid && myForm.controls['dateStart'].touched">
-                Не указана дата
-            </div>
-        </div>
+  <form [formGroup]="myForm" novalidate (ngSubmit)="submit()" *ngIf="dateStartEnd | async as objArrDate">
+    <div class="form-group dateInput">
+      <label>Date start</label><br>
+      <input type="date" class="form-control" name="dateStart" formControlName="dateStart" [value]="objArrDate.dateStart"/>
+      <div class="alert alert-danger"
+           *ngIf="myForm.controls['dateStart'].invalid && myForm.controls['dateStart'].touched">
+        Не указана дата
+      </div>
+    </div>
 
-        <div class="form-group dateInput">
-            <label>Date end</label> <br>
-            <input type="date" class="form-control" name="dateEnd" formControlName="dateEnd" />
+    <div class="form-group dateInput">
+      <label>Date end</label> <br>
+      <input type="date" class="form-control" name="dateEnd" formControlName="dateEnd" [value]="objArrDate.dateEnd"/>
 
-            <div class="alert alert-danger" *ngIf="myForm.controls['dateEnd'].invalid && myForm.controls['dateEnd'].touched">
-                Не указана дата
-            </div>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary col-md-4 offset-4" [disabled]="myForm.invalid">
-    Отправить
-  </button>
-          <div class="alert alert-danger"  [ngClass]="{'showBlock': hideVal === true,
+      <div class="alert alert-danger" *ngIf="myForm.controls['dateEnd'].invalid && myForm.controls['dateEnd'].touched">
+        Не указана дата
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary col-md-4 offset-4" [disabled]="myForm.invalid">
+        Отправить
+      </button>
+      <div class="alert alert-danger" [ngClass]="{'showBlock': hideVal === true,
 'hideBlock': hideVal === false}">
-            Введите период времени менее 7 дней
-            или проверьте, чтобы Date end был позднее Date start
-          </div>
-        </div>
-    </form>
+        Введите период времени менее 7 дней
+        или проверьте, чтобы Date end был позднее Date start
+      </div>
+    </div>
+  </form>
 
 </div>
 
-<div class="table"  [ngClass]="{'showBlock': hide === true,
+<div class="table" [ngClass]="{'showBlock': hide === true,
 'hideBlock': hide === false}">
-<a href="/main">TRY AGAIN</a>
+  <a (click)="openForm()">TRY AGAIN</a>
 
-<h3  [ngClass]="{'showBlock': hideH3 === false,
+  <h3 [ngClass]="{'showBlock': hideH3 === false,
 'hideBlock': hideH3 === true}">Please, wait...</h3>
-<div class="bigWrap" *ngIf="allDates">
+  <div class="bigWrap" *ngIf="objAllData | async as obj">
+    <div *ngFor="let key of objectKeys(obj)">
 
-  <div class="wrapButtons">
-    <div *ngFor="let date of allDates;let i=index">
-      <a (click)="openNames(date)" class="buttons">{{date}}</a>
+      <div class="wrapButtons">
+        <div>
+          <a (click)="openNames(key)" class="buttons">{{key}}</a>
+
+        </div>
+      </div>
     </div>
   </div>
-</div>
+  <div class="bigWrap" *ngIf="selectedObj | async as arrStars">
 
-<div class="bigWrap">
-  <div class="wrap">
-    <div *ngFor="let name of allNames; let i = index">
-      <div (click)="openDetails(i)" class="mainForName">{{name}}</div>
+    <div class="bigWrap">
+      <div class="wrap">
+        <div *ngFor="let star of arrStars">
+          <div (click)="openDetails(star.id)" class="mainForName">{{star.name}}</div>
+        </div>
+      </div>
     </div>
+
   </div>
-</div>
 </div>

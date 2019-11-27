@@ -4,6 +4,13 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {BehaviorSubject} from 'rxjs';
+import {environment} from '../../environments/environment';
+
+import {Store} from '@ngrx/store';
+import {StoreData} from '../models/data.model';
+import {AppState} from '../store/app.state';
+import * as StoreDataAction from '../store/action/data.action';
+import {objDate} from '../store/selector/selectorDate';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +20,15 @@ export class ServiceService {
   private urlDet: string;
   private dateStart: Date;
   private dateEnd: Date;
-  private startEnd: Date[] = [];
+  mainUrl = environment.mainUrl;
+  apiKey = environment.apiKey;
+  private dateStartEnd: Observable<{}>;
+
 
   constructor(public router: Router,
               private route: ActivatedRoute,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private store: Store<AppState>) {
   }
 
 
@@ -35,36 +46,18 @@ export class ServiceService {
 
   }
 
-  takeDates(objArray) {
-    console.log('aaaa');
-    console.log(objArray);
-    this.dateStart = objArray.dateStart;
-    this.dateEnd = objArray.dateEnd;
-    console.log(this.dateStart);
-    console.log(this.dateEnd);
-    this.url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${this.dateStart}&end_date=${this.dateEnd}&api_key=9Ix4GmtXb3ZOtISXbhA91egYf7rFwo1s4cZoqbq3`;
-    console.log(this.url);
+
+  takeDates() {
+    this.dateStartEnd = this.store.select(objDate);
+    this.dateStartEnd.subscribe((data: {dateStart: Date, dateEnd: Date}) => {
+      this.dateStart = data.dateStart;
+      this.dateEnd = data.dateEnd;
+    });
+    this.url = `${this.mainUrl}feed?start_date=${this.dateStart}&end_date=${this.dateEnd}&api_key=${this.apiKey}`;
   }
 
   takeDetails(id) {
-    this.urlDet = `http://www.neowsapp.com/rest/v1/neo/${id}?api_key=9Ix4GmtXb3ZOtISXbhA91egYf7rFwo1s4cZoqbq3`;
-    console.log(this.url);
+    this.urlDet = `${this.mainUrl}neo/${id}?api_key=${this.apiKey}`;
   }
-
-  getStartEnd() {
-    console.log('1');
-    console.log(this.startEnd);
-    this.startEnd = {...this.startEnd, ...{dateStart: this.dateStart, dateEnd: this.dateEnd}};
-    // this.startEnd.push( this.dateStart);
-    // this.startEnd.push( this.dateEnd);
-    console.log('1');
-    console.log(this.startEnd);
-    this.takeDates(this.startEnd);
-  }
-
-  returnStartEnd() {
-    return this.dateStart;
-  }
-
 
 }
